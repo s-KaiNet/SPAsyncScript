@@ -2,17 +2,45 @@
 
 ---  
 
-This small JavaScript file can help you implement SOD (Script On Demand) solution for your own (or even external) scripts.  
+This small JavaScript file can help you implement SharePoint SOD (Script On Demand) solution for your own (or even external) scripts.  
 
 ## Examples  
 
 ---  
 
-Register your script:    
+Register your script:  
 
-```javascript
-var coreScript = new AsyncScript("faq.core", coreScriptSrc, function () { $("#head").replaceWith(FAQRS.PageTitle); });
 ```
-  
+var asyncScript = new SPAsyncScript(name, src, scriptLoadedCallback);
+```
+where   
+`name` - required, unique script name  
+`src` - required, script src, any valid value for javascript src is acceptable  
+`scriptLoadedCallback` - optional, this function will be called when your script will be loaded  
+
+Explicitly load your script:    
+ 
+```
+asyncScript.load();
+```  
+
+You can also register a dependency on other scripts (including out-of-the-box):    
+
+```
+var coreScript = new SPAsyncScript("myApp.core", coreSrc);
+asyncScript.registerDependency([coreScript]);  
+asyncScript.registerDependencyByName(["sp.js", "sp.runtime.js"]);
+```    
+
+Your script will be loaded after the `sp.js`, `sp.runtime.js`, `coreScript`.   
+
+Additionally you can use `ExecuteOrDelayUntilScriptLoaded` function in order to execute some code when your script will be loaded:   
+
+```
+ExecuteOrDelayUntilScriptLoaded(function () {
+			alert("My app script loaded!");
+		}, "myApp.core");
+```
+
 ---  
 ### TypeScript version coming soon....
