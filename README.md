@@ -40,7 +40,7 @@ Additionally you can use `ExecuteOrDelayUntilScriptLoaded` function in order to 
 
 ```
 ExecuteOrDelayUntilScriptLoaded(function () {
-			alert("My app script loaded!");
-		}, "myApp.core");
+	alert("My app script loaded!");
+}, "myApp.core");
 ```
 
