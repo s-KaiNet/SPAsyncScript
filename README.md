@@ -1,19 +1,19 @@
 # SPAsyncScript  
 
----  
+---
 
 This small JavaScript file can help you implement SharePoint SOD (Script On Demand) solution for your own (or even external) scripts.  
 
 ## Examples  
 
----  
+
 
 Register your script:  
 
 ```
 var asyncScript = new SPAsyncScript(name, src, scriptLoadedCallback);
 ```
-where   
+  
 `name` - required, unique script name  
 `src` - required, script src, any valid value for javascript src is acceptable  
 `scriptLoadedCallback` - optional, this function will be called when your script will be loaded  
