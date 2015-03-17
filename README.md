@@ -21,8 +21,10 @@ where
 Explicitly load your script:    
  
 ```
-asyncScript.load();
-```  
+asyncScript.load(sync);
+```    
+
+`sync` - optional, if true script will be loaded synchronously  
 
 You can also register a dependency on other scripts (including out-of-the-box):    
 

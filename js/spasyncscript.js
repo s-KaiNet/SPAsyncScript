@@ -4,7 +4,8 @@ window.SPAsyncScript = (function(){
 	function SPAsyncScript(key, src, onLoadFunction) {
 		var e = Function.validateParameters(arguments, [
 			{ name: "key", type: String },
-			{ name: "src", type: String }
+			{ name: "src", type: String },
+			{ name: "onLoadFunction", type: Function, optional: true }
 		], false);
 
 		if (e) throw e;
@@ -13,8 +14,8 @@ window.SPAsyncScript = (function(){
 		this.src = src;
 		var self = this;
 		this.onLoadFunction = function() {
-			if (typeof NotifyScriptLoadedAndExecuteWaitingJobs === "function") {
-				NotifyScriptLoadedAndExecuteWaitingJobs(self.key);
+			if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === "function") {
+				SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs(self.key);
 			}
 
 			if (onLoadFunction && typeof onLoadFunction === "function") {
@@ -22,7 +23,7 @@ window.SPAsyncScript = (function(){
 			}
 		};
 
-		RegisterSod(this.key, this.src);
+		SP.SOD.registerSod(this.key, this.src);
 	}
 
 	SPAsyncScript.prototype = {
@@ -35,7 +36,7 @@ window.SPAsyncScript = (function(){
 			if (e) throw e;
 
 			Array.forEach(asyncScripts, function (asyncScript) {
-				RegisterSodDep(this.key, asyncScript.key);
+				SP.SOD.registerSodDep(this.key, asyncScript.key);
 			}, this);
 		},
 		registerDependencyByName: function (kies) {
@@ -46,11 +47,17 @@ window.SPAsyncScript = (function(){
 			if (e) throw e;
 
 			Array.forEach(kies, function (key) {
-				RegisterSodDep(this.key, key);
+				SP.SOD.registerSodDep(this.key, key);
 			}, this);
 		},
-		load: function () {
-			LoadSodByKey(this.key, this.onLoadFunction);
+		load: function (sync) {
+			var e = Function.validateParameters(arguments, [
+				{ name: "sync", type: Boolean, optional: true }
+			], false);
+
+			if (e) throw e;
+			
+			SP.SOD.loadMultiple([this.key], this.onLoadFunction, sync);
 		}
 	};
 	
