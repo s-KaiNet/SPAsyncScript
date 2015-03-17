@@ -44,5 +44,3 @@ ExecuteOrDelayUntilScriptLoaded(function () {
 		}, "myApp.core");
 ```
 
----  
-### TypeScript version coming soon....
